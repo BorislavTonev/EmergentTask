@@ -1,0 +1,112 @@
+ public static int VersionCompare(string version1, string version2)
+        {
+            int result = 0;
+            int verison1DotCounts = version1.Split('.').Length - 1;
+            int verison2DotCounts = version2.Split('.').Length - 1;
+
+
+            int partsToCompare = DeterminePartsToCompare(verison1DotCounts, verison2DotCounts);
+
+
+            result = CompareParts(partsToCompare, version1, version2);
+
+
+
+            return result;
+
+        }
+
+        public static int CompareParts(int countOfParts, string ver1, string ver2)
+        {
+            int result = 0;
+            var version1  = ver1.Split(".");
+            var version2 = ver2.Split(".");
+
+            int numberOfRuns  = 0;
+            if (version1.Length == version2.Length)
+            {
+                numberOfRuns = version1.Length;
+            }
+            else
+            {
+                numberOfRuns = version1.Length >= version2.Length ? version1.Length : version2.Length;
+                if (version1.Length == numberOfRuns)
+                {
+                    var str = version1[numberOfRuns -1];
+                    var temp = Int32.Parse(str);
+                    if (temp == 0)
+                    {
+                        numberOfRuns--;
+                    }
+                    else
+                    {
+                        result = 1;
+                        return result;
+                    }
+                    
+                }
+                else
+                {
+                    var str = version2[numberOfRuns -1];
+                    var temp = Int32.Parse(str);
+                    if (temp == 0)
+                    {
+                        numberOfRuns--;
+                    }
+                    else
+                    {
+                        result = -1;
+                        return result;
+                    }
+                }
+            }
+            
+
+
+
+            for (int i = 0; i < numberOfRuns; i++)
+            {
+
+              var compareValue =  Math.Sign(Int32.Parse(version1[i]).CompareTo(Int32.Parse(version2[i])));
+
+                if (compareValue == -1)
+                {
+                    result = -1;
+                    break;
+                }
+                if (compareValue == 1)
+                {
+                    result = 1;
+                }
+              
+
+            }
+
+            return result;
+        }
+
+      
+
+ 
+
+        public static int DeterminePartsToCompare(int verison1Counts, int verison2Counts)
+        {
+            int result = 0;
+
+            var coapreResult = Math.Sign(verison1Counts.CompareTo(verison2Counts));
+
+            switch (coapreResult)
+            {
+                case 1:
+                    result = verison2Counts;
+                    break;
+                case 0:
+                    result = verison1Counts;
+                    break;
+                case -1:
+                    result = verison1Counts;
+                    break;
+            }
+            return result;
+            
+        }
